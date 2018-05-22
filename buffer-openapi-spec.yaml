@@ -35,6 +35,10 @@ tags:
     description: A user represents a single Buffer user account.
     externalDocs:
       url: https://buffer.com/developers/api/user
+  - name: profiles
+    description: A Buffer profile represents a connection to a single social media account.
+    externalDocs:
+      url: https://buffer.com/developers/api/profiles
 
 securityDefinitions:
   Bearer:
@@ -117,6 +121,67 @@ paths:
       tags:
         - user
 
+  /profiles.json:
+    get:
+      summary: Returns an array of social media profiles connected to a users account.
+      responses:
+        200:
+          description: Returns an array of social media profiles connected to a users account.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Profile'
+      tags:
+        - profiles
+
+  /profiles/{id}.json:
+    get:
+      summary: Returns details of the single specified social media profile.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        200:
+          description: Returns details of the single specified social media profile.
+          schema:
+            $ref: '#/definitions/Profile'
+      tags:
+        - profiles
+
+  /profiles/{id}/schedules.json:
+    get:
+      summary: Returns details of the posting schedules associated with a social media profile.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        200:
+          description: Returns details of the posting schedules associated with a social media profile.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Schedule'
+      tags:
+        - profiles
+
+  /profiles/{id}/schedules/update.json:
+    post:
+      summary: Set the posting schedules for the specified social media profile.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+      responses:
+        200:
+          description: Set the posting schedules for the specified social media profile.
+      tags:
+        - profiles
+
 definitions:
   User:
     type: object
@@ -144,3 +209,100 @@ definitions:
       id: '4f0c0a06512f7ef214000000'
       plan: free
       timezone: Asia/Tel_Aviv
+  Profile:
+    type: object
+    properties:
+      avatar:
+        type: string
+      created_at:
+        type: integer
+        format: int32
+      default:
+        type: boolean
+      formatted_username:
+        type: string
+      id:
+        type: string
+      schedules:
+        type: array
+        items:
+          $ref: '#/definitions/Schedule'
+      service:
+        type: string
+      service_id:
+        type: string
+      service_username:
+        type: string
+      statistics:
+        type: object
+        properties:
+          followers:
+            type: integer
+            format: int32
+      team_members:
+        type: array
+        items:
+          type: string
+      timezone:
+        type: string
+      user_id:
+        type: string
+    example:
+      avatar: 'http://a3.twimg.com/profile_images/1405180232.png'
+      created_at: 1320703028
+      default: true
+      formatted_username: '@skinnyoteam'
+      id: '4eb854340acb04e870000010'
+      schedules:
+        - days:
+            - mon
+            - tue
+            - wed
+            - thu
+            - fri
+          times:
+            - '12:00'
+            - '17:00'
+            - '18:00'
+      service: twitter
+      service_id: '164724445'
+      service_username: skinnyoteam
+      statistics:
+        followers: 246
+      team_members:
+        - '4eb867340acb04e670000001'
+      timezone: Europe/London
+      user_id: '4eb854340acb04e870000010'
+  Schedule:
+    type: object
+    properties:
+      days:
+        type: 'array'
+        items:
+          type: 'string'
+          enum:
+          - 'mon'
+          - 'tue'
+          - 'wed'
+          - 'thu'
+          - 'fri'
+          - 'sat'
+          - 'sun'
+      times:
+        type: 'array'
+        items:
+          type: 'string'
+    required:
+      - days
+      - times
+    example:
+      days:
+        - mon
+        - tue
+        - wed
+        - thu
+        - fri
+      times:
+        - '12:00'
+        - '17:00'
+        - '18:00'

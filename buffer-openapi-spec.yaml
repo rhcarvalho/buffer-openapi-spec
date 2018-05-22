@@ -26,5 +26,59 @@ consumes:
 produces:
   - application/json
 
+tags:
+  - name: auth
+    description: Authentication with Buffer is the first step in building your app.
+    externalDocs:
+      url: https://buffer.com/developers/api/oauth
+
+securityDefinitions:
+  Bearer:
+    # header must be set to "Authorization: Bearer ${AccessToken}"
+    type: apiKey
+    in: header
+    name: Authorization
+
+security:
+  - Bearer: []
+
 paths:
-  {}
+  /oauth2/token.json:
+    post:
+      summary: Getting an Access Token
+      security: []
+      parameters:
+        - in: formData
+          name: client_id
+          required: true
+          type: string
+        - in: formData
+          name: client_secret
+          required: true
+          type: string
+        - in: formData
+          name: redirect_uri
+          required: true
+          type: string
+        - in: formData
+          name: code
+          required: true
+          type: string
+        - in: formData
+          name: grant_type
+          required: true
+          type: string
+          enum: [authorization_code]
+      responses:
+        200:
+          description: >
+            If your request is successful we will return a long-lived access
+            token which can be used to access the users account details for
+            all further api requests.
+          schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+      tags:
+        - auth

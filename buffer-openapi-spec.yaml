@@ -31,6 +31,10 @@ tags:
     description: Authentication with Buffer is the first step in building your app.
     externalDocs:
       url: https://buffer.com/developers/api/oauth
+  - name: user
+    description: A user represents a single Buffer user account.
+    externalDocs:
+      url: https://buffer.com/developers/api/user
 
 securityDefinitions:
   Bearer:
@@ -82,3 +86,61 @@ paths:
                 type: string
       tags:
         - auth
+
+  /user.json:
+    get:
+      summary: Returns a single user.
+      responses:
+        200:
+          description: Returns a single user.
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+        - user
+
+  /user/deauthorize.json:
+    post:
+      summary: Deauthorize your client for the user.
+      responses:
+        200:
+          description: Deauthorize your client for the user.
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              message:
+                type: string
+            example:
+              success: true
+              message: Access successfully revoked!
+      tags:
+        - user
+
+definitions:
+  User:
+    type: object
+    properties:
+      # '_id' is the same as 'id'; ommited because it is unnecessary and because
+      # it causes swagger-codegen to generate broken clients.
+      #_id:
+      #  type: string
+      id:
+        type: string
+      activity_at:
+        type: integer
+        format: int32
+      created_at:
+        type: integer
+        format: int32
+      plan:
+        type: string
+      timezone:
+        type: string
+    example:
+      _id: '4f0c0a06512f7ef214000000'
+      activity_at: 1343654640
+      created_at: 1326189062
+      id: '4f0c0a06512f7ef214000000'
+      plan: free
+      timezone: Asia/Tel_Aviv

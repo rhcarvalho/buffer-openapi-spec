@@ -1,0 +1,30 @@
+swagger: '2.0'
+
+info:
+  title: Buffer OpenAPI Spec
+  description: |
+    OpenAPI Spec for Buffer, handcrafted by [Rodolfo Carvalho](http://rodolfocarvalho.net).
+
+    **Note**: This is not an official spec. This is not endorsed by Buffer.
+  version: 1.0.0
+  license:
+    name: MIT License
+    url: https://github.com/rhcarvalho/buffer-openapi-spec/blob/master/LICENSE
+
+externalDocs:
+  description: Official Buffer API documentation
+  url: https://buffer.com/developers/api
+
+host: api.bufferapp.com
+basePath: '/1'
+schemes:
+  - https
+
+consumes:
+  - application/x-www-form-urlencoded
+
+produces:
+  - application/json
+
+paths:
+  {}
